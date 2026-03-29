@@ -2,8 +2,7 @@ package praktikum;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 public class BurgerTest {
     @Test
@@ -118,5 +117,45 @@ public class BurgerTest {
         float expected = 100f * 2 + 50f + 80f;
         assertEquals(expected, burger.getPrice(), 0.0001);
     }
+    @Test
+    public void getReceiptWithNoIngredientsTest() {
+        Burger burger = new Burger();
+        Bun bun = new Bun("White Bun", 100f);
+        burger.setBuns(bun);
+        String receipt = burger.getReceipt();
+        assertTrue(receipt.contains("White Bun"));
+        assertTrue(receipt.contains("200"));
+    }
 
+    @Test
+    public void getReceiptWithOneIngredientTest() {
+        Burger burger = new Burger();
+        Bun bun = new Bun("White Bun", 100f);
+        Ingredient ingredient = new Ingredient(IngredientType.SAUCE, "Hot Sauce", 50f);
+        burger.setBuns(bun);
+        burger.addIngredient(ingredient);
+        String receipt = burger.getReceipt();
+        assertTrue(receipt.contains("White Bun"));
+        assertTrue(receipt.contains("sauce"));
+        assertTrue(receipt.contains("Hot Sauce"));
+        assertTrue(receipt.contains("250"));
+    }
+
+    @Test
+    public void getReceiptWithMultipleIngredientsTest() {
+        Burger burger = new Burger();
+        Bun bun = new Bun("White Bun", 100f);
+        Ingredient ing1 = new Ingredient(IngredientType.FILLING, "Cutlet", 100f);
+        Ingredient ing2 = new Ingredient(IngredientType.SAUCE, "Cheese", 80f);
+        burger.setBuns(bun);
+        burger.addIngredient(ing1);
+        burger.addIngredient(ing2);
+        String receipt = burger.getReceipt();
+        assertTrue(receipt.contains("White Bun"));
+        assertTrue(receipt.contains("filling"));
+        assertTrue(receipt.contains("Cutlet"));
+        assertTrue(receipt.contains("sauce"));
+        assertTrue(receipt.contains("Cheese"));
+        assertTrue(receipt.contains("380"));;
+    }
 }
